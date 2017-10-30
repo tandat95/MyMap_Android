@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="70"
+        android:paddingLeft="10dp">
+
+
+        <TextView
+            android:id="@+id/textViewLocationName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Name" />
+
+
+        <TextView
+            android:id="@+id/textViewLocationAdress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="9sp"
+            android:text="Adress" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="30"
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFF"
+            android:drawableTop="@drawable/ic_favorite_border_24dp"
+            android:textSize="9sp"
+            android:text="Lưu"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFF"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_directions_24dp"
+            android:text="Chỉ đường"
+            android:textSize="9sp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
