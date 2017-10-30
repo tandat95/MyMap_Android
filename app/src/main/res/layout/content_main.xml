@@ -19,65 +19,81 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp" />
 
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            style="@style/MaterialSearchBarLight"
+            app:mt_speechMode="true"
+            app:mt_hint="Thử trạm xăng, ATM,..."
+            app:mt_maxSuggestionsCount="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchBar"
+            android:padding="16dp"
+            app:mt_hintColor="#6c6c6c"
+            app:mt_navIconEnabled="true"
+            app:mt_textCursorTint="@color/colorPrimary"
+            app:mt_searchIconDrawable="@drawable/ic_search_white_24dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:orientation="vertical"
             android:weightSum="100">
 
-           <HorizontalScrollView
-               android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="20"
+                android:background="#e2dcdc"
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
-               android:layout_height="0dp"
-               android:layout_weight="20"
-               android:orientation="horizontal"
-               android:background="#e2dcdc">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:drawableTop="@drawable/ic_restaurant_30dp"
+                        android:text="Nhà hàng"
+                        android:textSize="9sp" />
 
-                   <Button
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:text="Nhà hàng"
-                       android:textSize="9sp"
-                       android:background="#FFFFFF"
-                       android:drawableTop="@drawable/ic_restaurant_30dp" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:drawableTop="@drawable/ic_ev_station_30dp"
+                        android:text="Cây xăng"
+                        android:textSize="9sp" />
 
-                   <Button
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:text="Cây xăng"
-                       android:textSize="9sp"
-                       android:background="#FFFFFF"
-                       android:drawableTop="@drawable/ic_ev_station_30dp" />
-                   <Button
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:text="Trạm bus"
-                       android:textSize="9sp"
-                       android:background="#FFFFFF"
-                       android:drawableTop="@drawable/ic_directions_bus_30dp" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:drawableTop="@drawable/ic_directions_bus_30dp"
+                        android:text="Trạm bus"
+                        android:textSize="9sp" />
 
-                   <Button
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:text="ATM"
-                       android:textSize="9sp"
-                       android:background="#FFFFFF"
-                       android:drawableTop="@drawable/ic_local_atm_30dp" />
-                   <Button
-                       android:layout_width="wrap_content"
-                       android:layout_height="match_parent"
-                       android:text="Khách sạn"
-                       android:textSize="9sp"
-                       android:background="#FFFFFF"
-                       android:drawableTop="@drawable/ic_hotel_30dp" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:drawableTop="@drawable/ic_local_atm_30dp"
+                        android:text="ATM"
+                        android:textSize="9sp" />
 
-               </LinearLayout>
-           </HorizontalScrollView>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:drawableTop="@drawable/ic_hotel_30dp"
+                        android:text="Khách sạn"
+                        android:textSize="9sp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
 
             <ListView

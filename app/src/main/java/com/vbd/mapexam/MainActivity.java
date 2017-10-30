@@ -3,7 +3,6 @@ package com.vbd.mapexam;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -11,10 +10,10 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.vietbando.vietbandosdk.annotations.Polyline;
 import com.vietbando.vietbandosdk.annotations.PolylineOptions;
 import com.vietbando.vietbandosdk.camera.CameraUpdateFactory;
@@ -44,7 +44,7 @@ import java.util.List;
 import adapter.SearchResultAdapter;
 import model.SearchResultObject;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MaterialSearchBar.OnSearchActionListener, PopupMenu.OnMenuItemClickListener {
 
     MapView mapView;
     VietbandoMap map;
@@ -52,31 +52,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Polyline polyline;
     int pos = 0;
     ListView lvSuggessSearch;
-
+    DrawerLayout drawer;
+    private List<String> lastSearches;
+    private MaterialSearchBar searchBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == android.R.id.home) {
-                    lvSuggessSearch.setVisibility(View.INVISIBLE);
-                }
-                return true;
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int a = item.getItemId();
-                Toast.makeText(MainActivity.this, a + "", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
-        setSupportActionBar(toolbar);
+
+        searchBar = (MaterialSearchBar) findViewById(R.id.searchBar);
+        searchBar.setHint("Tìm kiếm gần đây");
+        searchBar.setSpeechMode(true);
+        //enable searchbar callbacks
+        searchBar.setOnSearchActionListener(MainActivity.this);
+
+        //restore last queries from disk
+
+        //Inflate menu and setup OnMenuItemClickListener
+        searchBar.inflateMenu(R.menu.main);
+        searchBar.getMenu().setOnMenuItemClickListener(this);
+        searchBar.setCardViewElevation(10);
+
+
+
+
+//
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+//
+//        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +91,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.main, menu);
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
+        final SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -216,8 +220,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lvSuggessSearch.setVisibility(View.VISIBLE);
             }
         });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Toast.makeText(MainActivity.this, newText, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(MainActivity.this, "ssfsf", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         return true;
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        switch (buttonCode){
+            case MaterialSearchBar.BUTTON_NAVIGATION:
+                drawer.openDrawer(Gravity.LEFT);
+                break;
+            case MaterialSearchBar.BUTTON_SPEECH:
+
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
     }
 
     public class RouteData {
@@ -285,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         mapView.onDestroy();
     }
 
@@ -303,4 +354,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         alertDialog.show();
     }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }
